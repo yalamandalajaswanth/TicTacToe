@@ -55,37 +55,42 @@ class TicTacToe:
                         return False
         return True
     def __init__(self,turn = True,XorO = True):
-        first = input('wanna play first? say Y or N:')
-        self.turn = 'U' if first =='Y' else 'B' #U for user B for bot
-        self.userXorO = 'X' if input('type X to play as X and O to play as O')=='X' else 'O'
-        self.botXorO = 'X' if self.userXorO == 'O' else 'O'
+        first = input('who wanna play first? say p1 or p2:')
+        self.turn = 'p1' if first.lower() =='p1'else 'p2'  #U-p1, B-p2
+        #self.userXorO = 'X' if input('type X to play as X and O to play as O').upper()=='X' else 'O'
+        #self.botXorO = 'O' if self.userXorO == 'X' else 'x'
         #game begins:
+        if self.turn=='p1':
+            self.userXorO='X' if input('player1,type X to play as X and O to play as O').upper()=='X' else 'O'
+            self.botXorO = 'O' if self.userXorO == 'X' else 'X'
+        if self.turn=='p2':
+            self.botXorO = 'X' if input('player2, type X to play as X and O to play as O').upper()=='X' else 'O'
+            self.userXorO='O' if self.userXorO == 'X' else 'X'
         self.grid = [['j' for i in range(3)] for j in range(3)]
         self.printGrid()
         while(True):
-            if self.turn == 'U':
-                position = int(input('enter an available position from 1-9'))
+            if self.turn == 'p1':
+                position = int(input('Player 1 enter an available position from 1-9'))
                 while not self.isAvailable(position) or position<1 or position>9:
                     print("available positions - ", self.availablePositions())
                     position = int(input('position invalid, enter a valid position:'))
                 print(position)
                 self.changeGrid(position,self.userXorO)
                 self.printGrid()
-                self.turn = 'B'
+                self.turn = 'p2'
                 if self.gameOver():
-                    print("YOU WON!!!")
+                    print("Player 1 won!!!")
                     break
             else:
-                print("Bot playing")
-                available = self.availablePositions()
-                position = random.choice(available)
+                position = int(input('Player 2 enter an available position from 1-9'))
+                while not self.isAvailable(position) or position<1 or position>9:
+                    print("available positions - ", self.availablePositions())
+                    position = int(input('position invalid, enter a valid position:'))
+                print(position)
                 self.changeGrid(position,self.botXorO)
                 self.printGrid()
-                self.turn = 'U'
+                self.turn = 'p1'
                 if self.gameOver():
-                    print("YOU LOST:(")
-                    break
-            if self.draw():
-                print("it's a draw")
-                break
+                    print("Player 2 won")
+                    break   
 t=TicTacToe()
